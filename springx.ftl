@@ -2,6 +2,7 @@
  * Copyright 2011 Alan Shaw
  * 
  * http://www.freestyle-developments.co.uk
+ * http://github.com/alanshaw/springx-freemarker-macros
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
