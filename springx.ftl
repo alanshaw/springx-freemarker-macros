@@ -256,3 +256,25 @@
 		<#if ordered></ol><#else></ul></#if>
 	</#if>
 </#macro>
+
+<#--
+ * Determines whether there are any messages at the given severity for the given message sources.
+ *
+ * @param sources An array of sources to get errors from (or string if only one source)
+ * @param severity String representation of org.springframework.binding.message.Severity. Additionally pass "ALL" or
+ * omit the param to determine if there are any messages for all severities
+ * @return Whether or not there are any messages
+-->
+<#function hasFlowMessages sources severity="ALL">
+	<#if sources?is_string><#local sources = [sources]/></#if>
+	<#list sources as source>
+		<#local messages = flowRequestContext.messageContext.getMessagesBySource(source)/>
+		<#if (messages?size > 0 && severity == "ALL")><#return true/></#if>
+		<#list messages as message>
+			<#if message.severity?string == severity>
+				<#return true/>
+			</#if>
+		</#list>
+	</#list>
+	<#return false/>
+</#function>
