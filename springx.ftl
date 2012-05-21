@@ -278,3 +278,37 @@
 	</#list>
 	<#return false/>
 </#function>
+
+<#--
+ * FreeMarker copies Maps by default into a HashMap which doesn't preserve their ordering (if there was one before).
+ * This macro outputs a HTML <select> whose <option>'s values are sorted in ASC (by default) order.
+ *
+ * @param path @see spring.formSingleSelect
+ * @param options @see spring.formSingleSelect
+ * @param attributes @see spring.formSingleSelect
+ * @param ordering The sort order for the <option> values ("ASC" or "DESC")
+-->
+<#macro sortedFormSingleSelect path options attributes="" ordering="ASC">
+	<@spring.bind path/>
+	<select id="${spring.status.expression}" name="${spring.status.expression}" ${attributes}>
+		<#if options?is_hash>
+			<#if ordering == "ASC">
+				<#local keys = options?keys?sort />
+			<#else>
+				<#local keys = options?keys?sort?reverse />
+			</#if>
+			<#list keys as value>
+			<option value="${value?html}"<@spring.checkSelected value/>>${options[value]?html}</option>
+			</#list>
+		<#else> 
+			<#if ordering == "ASC">
+				<#local options = options?sort />
+			<#else>
+				<#local options = options?sort?reverse />
+			</#if>
+			<#list options as value>
+			<option value="${value?html}"<@spring.checkSelected value/>>${value?html}</option>
+			</#list>
+		</#if>
+	</select>
+</#macro>
